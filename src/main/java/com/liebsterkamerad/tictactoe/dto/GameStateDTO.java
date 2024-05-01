@@ -1,9 +1,11 @@
-package com.liebsterkamerad.tictactoe;
+package com.liebsterkamerad.tictactoe.dto;
+
+import com.liebsterkamerad.tictactoe.model.CellState;
 
 import java.util.ArrayList;
 
-public record GameState(ArrayList<ArrayList<CellState>> board, String X_PlayerName, String O_PLayerName) {
-    public GameState {
+public record GameStateDTO(ArrayList<ArrayList<CellState>> board, String playerName_X, String playerName_O) {
+    public GameStateDTO {
         for (var row : board) {
             if (row.size() != board.size()) {
                 throw new IllegalArgumentException("Board should be square. All rows must have the same number of columns.");
@@ -14,11 +16,11 @@ public record GameState(ArrayList<ArrayList<CellState>> board, String X_PlayerNa
             throw new IllegalArgumentException("Board should be at least 3x3.");
         }
 
-        if (X_PlayerName.isBlank() || O_PLayerName.isBlank()) {
+        if (playerName_X.isBlank() || playerName_O.isBlank()) {
             throw new IllegalArgumentException("Player names should not be blank.");
         }
 
-        if (X_PlayerName.equals(O_PLayerName)) {
+        if (playerName_X.equals(playerName_O)) {
             throw new IllegalArgumentException("Player names should be different.");
         }
     }

@@ -1,15 +1,27 @@
 package com.liebsterkamerad.tictactoe;
 
+import com.liebsterkamerad.tictactoe.dto.GameStateDTO;
+import com.liebsterkamerad.tictactoe.model.CellState;
+import com.liebsterkamerad.tictactoe.model.CompletedGame;
+import com.liebsterkamerad.tictactoe.model.GameResult;
+import com.liebsterkamerad.tictactoe.model.GameStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 @Service
 public class GameService {
-    public GameResult evaluateGameState(GameState gameState) {
-        ArrayList<ArrayList<CellState>> board = gameState.board();
+
+    private final CompletedGamesRepository completedGamesRepository;
+
+    public GameService(CompletedGamesRepository completedGamesRepository) {
+        this.completedGamesRepository = completedGamesRepository;
+    }
+
+    public GameResult evaluateGameState(ArrayList<ArrayList<CellState>> board) {
         int size = board.size();
 
         for (int i = 0; i < size; i++) {
@@ -44,7 +56,24 @@ public class GameService {
         return new GameResult(null, GameStatus.NOT_FINISHED);
     }
 
-    public List<GameState> getCompletedGames() {
-        return null;
+    public List<CompletedGame> getCompletedGames() {
+        return completedGamesRepository.findAll();
+    }
+
+    public void saveCompletedGame(GameStateDTO gameStateDTO, GameResult result) {
+        String winnerName = null;
+        String loserName = null;
+        switch (result.winnerState()) {
+            case X -> {
+                winnerName = gameStateDTO.playerName_X();
+                loserName = gameStateDTO.playerName_O();
+            }
+            case O -> {
+                winnerName = gameStateDTO.playerName_O();
+                loserName = gameStateDTO.playerName_X();
+            }
+        }
+        completedGamesRepository.save(
+                new CompletedGame(null, winnerName, loserName, result.winnerState(), LocalDateTime.now()));
     }
 }

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: tic-tac-toe
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+
