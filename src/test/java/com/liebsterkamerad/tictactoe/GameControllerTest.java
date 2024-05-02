@@ -134,4 +134,202 @@ public class GameControllerTest extends AbstractIntegrationTest{
                 });
     }
 
+    @Test
+    @DisplayName("Play one win and one draw game")
+    public void playOneWinAndOneDrawGame() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "O", "X"],
+                                                    ["O", "X", "O"],
+                                                    ["O", "X", "X"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Player X - Alice - wins!", content);
+                });
+
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "O", "X"],
+                                                    ["O", "X", "O"],
+                                                    ["O", "X", "O"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("It's a draw!", content);
+                });
+
+        mockMvc.perform(get("/api/completed-games"))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    JSONArray games = JsonPath.parse(content).read("$");
+                    assertEquals(2, games.size());
+                });
+    }
+
+    @Test
+    @DisplayName("Player X wins with column on 7x7 board")
+    public void playerXwinsColumn7x7() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "O", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "O"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Player X - Alice - wins!", content);
+                });
+    }
+
+    @Test
+    @DisplayName("Player O wins with row on 7x7 board")
+    public void playerOwinsRow7x7() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "O", "O", "O", "O", "O", "O"],
+                                                    ["X", "O", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "O", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "O"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Player O - Bob - wins!", content);
+                });
+    }
+
+    @Test
+    @DisplayName("Player X wins main diagonal on 7x7 board")
+    public void playerXwinsMainDiagonal7x7() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "X", "X", "O", "O", "O"],
+                                                    ["X", "O", "X", "X", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "X", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Player X - Alice - wins!", content);
+                });
+    }
+
+    @Test
+    @DisplayName("Player O wins secondary diagonal on 7x7 board")
+    public void playerOwinsSecondaryDiagonal7x7() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "O", "O"],
+                                                    ["X", "O", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "O", "O", "X", "O", "O", "O"],
+                                                    ["O", "X", "X", "O", "X", "O", "X"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Player O - Bob - wins!", content);
+                });
+    }
+
+    @Test
+    @DisplayName("Draw on 7x7 board")
+    public void draw7x7() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "O", "O", "X", "O", "X", "O"],
+                                                    ["X", "O", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "O", "X", "O", "X"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("It's a draw!", content);
+                });
+    }
 }
