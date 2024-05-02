@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,6 +65,81 @@ public class GameControllerTest extends AbstractIntegrationTest{
                     String content = result.getResponse().getContentAsString();
                     JSONArray games = JsonPath.parse(content).read("$");
                     assertEquals(0, games.size());
+                });
+    }
+
+    @Test
+    @DisplayName("Invalid game state: Player X has advantage")
+    public void invalidGameStatePlayerXHasAdvantage() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "O", "X"],
+                                                    ["_", "_", "_"],
+                                                    ["X", "_", "_"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    String message = JsonPath.parse(content).read("$.message");
+                    assertTrue(message.contains("Player X has unjust advantage by 2 moves."));
+                });
+    }
+
+    @Test
+    @DisplayName("Invalid game state: Player X has advantage II")
+    public void invalidGameStatePlayerXHasAdvantage_2() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "_", "_"],
+                                                    ["_", "_", "_"],
+                                                    ["X", "_", "_"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    String message = JsonPath.parse(content).read("$.message");
+                    assertTrue(message.contains("Player X has unjust advantage by 2 moves."));
+                });
+    }
+
+    @Test
+    @DisplayName("Invalid game state: Player O has advantage")
+    public void invalidGameStatePlayerOHasAdvantage() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["O", "_", "_"],
+                                                    ["_", "O", "_"],
+                                                    ["_", "_", "_"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    String message = JsonPath.parse(content).read("$.message");
+                    assertTrue(message.contains("Player O has unjust advantage by 2 moves."));
                 });
     }
 
@@ -231,11 +307,11 @@ public class GameControllerTest extends AbstractIntegrationTest{
                                                 "board": [
                                                     ["X", "X", "O", "X", "O", "X", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "X"],
-                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "O", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "X"],
                                                     ["O", "X", "O", "X", "O", "X", "O"],
                                                     ["O", "X", "O", "X", "O", "O", "O"],
-                                                    ["X", "X", "X", "O", "X", "O", "O"]
+                                                    ["X", "X", "X", "O", "O", "O", "O"]
                                                 ],
                                                 "playerName_X": "Alice",
                                                 "playerName_O": "Bob"
@@ -258,12 +334,12 @@ public class GameControllerTest extends AbstractIntegrationTest{
                                 """
                                             {
                                                 "board": [
-                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "O", "X", "O", "X", "X", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "X"],
                                                     ["O", "O", "O", "O", "O", "O", "O"],
-                                                    ["X", "O", "X", "O", "X", "O", "X"],
+                                                    ["X", "O", "X", "O", "X", "X", "X"],
                                                     ["O", "X", "O", "X", "O", "X", "O"],
-                                                    ["O", "X", "O", "X", "O", "O", "O"],
+                                                    ["X", "X", "O", "X", "X", "O", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "O"]
                                                 ],
                                                 "playerName_X": "Alice",
@@ -287,13 +363,13 @@ public class GameControllerTest extends AbstractIntegrationTest{
                                 """
                                             {
                                                 "board": [
-                                                    ["X", "X", "O", "X", "O", "X", "O"],
-                                                    ["X", "X", "X", "O", "X", "O", "X"],
-                                                    ["O", "X", "X", "X", "O", "O", "O"],
-                                                    ["X", "O", "X", "X", "X", "O", "X"],
-                                                    ["O", "X", "O", "X", "X", "X", "O"],
-                                                    ["O", "X", "O", "X", "O", "X", "O"],
-                                                    ["X", "X", "X", "O", "X", "O", "X"]
+                                                    ["X", "X", "_", "O", "_", "X", "O"],
+                                                    ["X", "X", "X", "O", "O", "O", "X"],
+                                                    ["O", "X", "X", "X", "O", "_", "O"],
+                                                    ["_", "O", "X", "X", "_", "O", "X"],
+                                                    ["O", "_", "O", "X", "X", "X", "O"],
+                                                    ["O", "X", "O", "_", "O", "X", "O"],
+                                                    ["O", "O", "X", "O", "X", "O", "X"]
                                                 ],
                                                 "playerName_X": "Alice",
                                                 "playerName_O": "Bob"
@@ -316,12 +392,12 @@ public class GameControllerTest extends AbstractIntegrationTest{
                                 """
                                             {
                                                 "board": [
-                                                    ["X", "X", "O", "X", "O", "X", "O"],
+                                                    ["X", "X", "X", "X", "O", "X", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "X"],
                                                     ["O", "X", "O", "X", "O", "O", "O"],
                                                     ["X", "O", "X", "O", "X", "O", "X"],
                                                     ["O", "X", "O", "X", "O", "X", "O"],
-                                                    ["O", "O", "O", "X", "O", "O", "O"],
+                                                    ["O", "O", "O", "X", "X", "O", "O"],
                                                     ["O", "X", "X", "O", "X", "O", "X"]
                                                 ],
                                                 "playerName_X": "Alice",
@@ -346,11 +422,11 @@ public class GameControllerTest extends AbstractIntegrationTest{
                                             {
                                                 "board": [
                                                     ["X", "X", "O", "X", "O", "X", "O"],
-                                                    ["X", "X", "X", "O", "X", "O", "X"],
+                                                    ["O", "X", "X", "O", "X", "O", "X"],
                                                     ["O", "O", "O", "X", "O", "X", "O"],
                                                     ["X", "O", "X", "O", "X", "O", "X"],
                                                     ["O", "X", "O", "X", "O", "X", "O"],
-                                                    ["O", "X", "O", "X", "O", "X", "O"],
+                                                    ["O", "X", "O", "X", "O", "O", "O"],
                                                     ["X", "X", "X", "O", "X", "O", "X"]
                                                 ],
                                                 "playerName_X": "Alice",

@@ -23,5 +23,30 @@ public record GameStateDTO(ArrayList<ArrayList<CellState>> board, String playerN
         if (playerName_X.equals(playerName_O)) {
             throw new IllegalArgumentException("Player names should be different.");
         }
+
+        validateNoPlayerHasAdvantage(board);
+    }
+
+    private void validateNoPlayerHasAdvantage(ArrayList<ArrayList<CellState>> board) {
+        int count_X = 0;
+        int count_O = 0;
+
+        for (var row : board) {
+            for (var cell : row) {
+                if (cell == CellState.X) {
+                    count_X++;
+                } else if (cell == CellState.O) {
+                    count_O++;
+                }
+            }
+        }
+
+        if (count_X > count_O + 1) {
+            throw new IllegalArgumentException(
+                    "Player X has unjust advantage by %s moves.".formatted(count_X - count_O));
+        } else if (count_O > count_X + 1) {
+            throw new IllegalArgumentException(
+                    "Player O has unjust advantage by %s moves.".formatted(count_O - count_X));
+        }
     }
 }
