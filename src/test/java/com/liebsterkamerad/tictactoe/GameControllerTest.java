@@ -36,6 +36,38 @@ public class GameControllerTest extends AbstractIntegrationTest{
     }
 
     @Test
+    @DisplayName("Game is not finished")
+    public void gameIsNotFinished() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "O", "_"],
+                                                    ["_", "_", "_"],
+                                                    ["_", "_", "_"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("Game is not finished yet!", content);
+                });
+
+        mockMvc.perform(get("/api/completed-games"))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    JSONArray games = JsonPath.parse(content).read("$");
+                    assertEquals(0, games.size());
+                });
+    }
+
+    @Test
     @DisplayName("Player X wins 3x3")
     public void playerXwins3x3() throws Exception {
         mockMvc.perform(post("/api/game-state-evaluation")

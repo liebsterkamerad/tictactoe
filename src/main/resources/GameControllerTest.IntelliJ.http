@@ -1,6 +1,48 @@
 # Here is API test in IntelliJ IDEA format
 
-### Game State Evaluation
+### Game State Evaluation - Game is not finished!
+POST http://localhost:8080/api/game-state-evaluation
+Content-Type: application/json
+
+{
+  "board": [
+    ["X", "O", "_"],
+    ["_", "_", "_"],
+    ["_", "_", "_"]
+  ],
+  "playerName_X": "John Doe",
+  "playerName_O": "Zacharias Traianos"
+}
+
+### Game State Evaluation - Zacharias Traianos wins!
+POST http://localhost:8080/api/game-state-evaluation
+Content-Type: application/json
+
+{
+  "board": [
+    ["O", "X", "O"],
+    ["X", "O", "X"],
+    ["O", "X", "O"]
+  ],
+  "playerName_X": "John Doe",
+  "playerName_O": "Zacharias Traianos"
+}
+
+### Game State Evaluation - It's a draw!
+POST http://localhost:8080/api/game-state-evaluation
+Content-Type: application/json
+
+{
+  "board": [
+    ["X", "O", "O"],
+    ["O", "X", "X"],
+    ["O", "X", "O"]
+  ],
+  "playerName_X": "John Doe",
+  "playerName_O": "Zacharias Traianos"
+}
+
+### Game State Evaluation - Angelo Lamme wins!
 POST http://localhost:8080/api/game-state-evaluation
 Content-Type: application/json
 
@@ -14,8 +56,8 @@ Content-Type: application/json
     ["O", "X", "O", "X", "O", "O", "O"],
     ["X", "X", "X", "O", "X", "O", "O"]
   ],
-  "playerName_X": "John Doe",
-  "playerName_O": "Angelo Lamme"
+  "playerName_X": "Angelo Lamme",
+  "playerName_O": "John Doe"
 }
 
 ### Get Completed Games

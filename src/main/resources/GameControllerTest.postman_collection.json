@@ -1,13 +1,11 @@
 {
 	"info": {
-		"_postman_id": "d518a88c-1f11-4d82-b6e1-143793d4bfc6",
-		"name": "GameControllerTest",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "24717927"
+		"name": "TicTacToe API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Game State Evaluation",
+			"name": "Game State Evaluation - Game is not finished!",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -18,7 +16,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"board\": [\n    [\"X\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"O\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"O\"]\n  ],\n  \"playerName_X\": \"John Doe\",\n  \"playerName_O\": \"Angelo Lamme\"\n}"
+					"raw": "{\n  \"board\": [\n    [\"X\", \"O\", \"_\"],\n    [\"_\", \"_\", \"_\"],\n    [\"_\", \"_\", \"_\"]\n  ],\n  \"playerName_X\": \"John Doe\",\n  \"playerName_O\": \"Zacharias Traianos\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/game-state-evaluation",
@@ -32,14 +30,96 @@
 						"game-state-evaluation"
 					]
 				}
-			},
-			"response": []
+			}
+		},
+		{
+			"name": "Game State Evaluation - Zacharias Traianos wins!",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"board\": [\n    [\"O\", \"X\", \"O\"],\n    [\"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\"]\n  ],\n  \"playerName_X\": \"John Doe\",\n  \"playerName_O\": \"Zacharias Traianos\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/game-state-evaluation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"game-state-evaluation"
+					]
+				}
+			}
+		},
+		{
+			"name": "Game State Evaluation - It's a draw!",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"board\": [\n    [\"X\", \"O\", \"O\"],\n    [\"O\", \"X\", \"X\"],\n    [\"O\", \"X\", \"O\"]\n  ],\n  \"playerName_X\": \"John Doe\",\n  \"playerName_O\": \"Zacharias Traianos\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/game-state-evaluation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"game-state-evaluation"
+					]
+				}
+			}
+		},
+		{
+			"name": "Game State Evaluation - Angelo Lamme wins!",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"board\": [\n    [\"X\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"O\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"O\"]\n  ],\n  \"playerName_X\": \"Angelo Lamme\",\n  \"playerName_O\": \"John Doe\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/game-state-evaluation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"game-state-evaluation"
+					]
+				}
+			}
 		},
 		{
 			"name": "Get Completed Games",
 			"request": {
 				"method": "GET",
-				"header": [],
 				"url": {
 					"raw": "http://localhost:8080/api/completed-games",
 					"protocol": "http",
@@ -52,8 +132,7 @@
 						"completed-games"
 					]
 				}
-			},
-			"response": []
+			}
 		}
 	]
 }
