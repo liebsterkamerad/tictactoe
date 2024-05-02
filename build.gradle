@@ -35,6 +35,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'com.jayway.jsonpath:json-path:2.6.0'
 }
 
 tasks.named('test') {

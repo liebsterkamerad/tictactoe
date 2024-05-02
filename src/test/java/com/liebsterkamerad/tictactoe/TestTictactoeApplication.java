@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
-@TestConfiguration(proxyBeanMethods = false)
+@TestConfiguration(proxyBeanMethods = true)
 public class TestTictactoeApplication {
 
     @Bean

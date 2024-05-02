@@ -45,7 +45,7 @@ public class GameController {
         return ResponseEntity.badRequest().body("Invalid game state!");
     }
 
-    @GetMapping
+    @GetMapping("/completed-games")
     private ResponseEntity<?> getCompletedGames() {
         return ResponseEntity.ok(gameService.getCompletedGames());
     }
