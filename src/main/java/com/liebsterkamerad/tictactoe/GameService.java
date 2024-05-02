@@ -61,19 +61,12 @@ public class GameService {
     }
 
     public void saveCompletedGame(GameStateDTO gameStateDTO, GameResult result) {
-        String winnerName = null;
-        String loserName = null;
-        switch (result.winnerState()) {
-            case X -> {
-                winnerName = gameStateDTO.playerName_X();
-                loserName = gameStateDTO.playerName_O();
-            }
-            case O -> {
-                winnerName = gameStateDTO.playerName_O();
-                loserName = gameStateDTO.playerName_X();
-            }
-        }
         completedGamesRepository.save(
-                new CompletedGame(null, winnerName, loserName, result.winnerState(), LocalDateTime.now()));
+                new CompletedGame(null,
+                        gameStateDTO.playerName_X(),
+                        gameStateDTO.playerName_O(),
+                        result.winnerMark(),
+                        result.gameStatus(),
+                        LocalDateTime.now()));
     }
 }

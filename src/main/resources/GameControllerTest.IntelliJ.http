@@ -1,0 +1,22 @@
+# Here is API test in IntelliJ IDEA format
+
+### Game State Evaluation
+POST http://localhost:8080/api/game-state-evaluation
+Content-Type: application/json
+
+{
+  "board": [
+    ["X", "X", "O", "X", "O", "X", "O"],
+    ["X", "X", "X", "O", "X", "O", "X"],
+    ["O", "X", "O", "X", "O", "X", "O"],
+    ["X", "X", "X", "O", "X", "O", "X"],
+    ["O", "X", "O", "X", "O", "X", "O"],
+    ["O", "X", "O", "X", "O", "O", "O"],
+    ["X", "X", "X", "O", "X", "O", "O"]
+  ],
+  "playerName_X": "John Doe",
+  "playerName_O": "Angelo Lamme"
+}
+
+### Get Completed Games
+GET http://localhost:8080/api/completed-games

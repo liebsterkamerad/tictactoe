@@ -1,4 +1,4 @@
 package com.liebsterkamerad.tictactoe.model;
 
-public record GameResult(CellState winnerState, GameStatus status) {
+public record GameResult(CellState winnerMark, GameStatus gameStatus) {
 }

@@ -101,4 +101,37 @@ public class GameControllerTest extends AbstractIntegrationTest{
                 });
     }
 
+    @Test
+    @DisplayName("It's a draw 3x3")
+    public void itsADraw3x3() throws Exception {
+        mockMvc.perform(post("/api/game-state-evaluation")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(
+                                """
+                                            {
+                                                "board": [
+                                                    ["X", "O", "X"],
+                                                    ["O", "X", "O"],
+                                                    ["O", "X", "O"]
+                                                ],
+                                                "playerName_X": "Alice",
+                                                "playerName_O": "Bob"
+                                            }
+                                        """
+                        ))
+                .andExpect(result -> {
+                    assertEquals(200, result.getResponse().getStatus());
+                    String content = result.getResponse().getContentAsString();
+                    assertEquals("It's a draw!", content);
+                });
+
+        mockMvc.perform(get("/api/completed-games"))
+                .andExpect(status().isOk())
+                .andExpect(result -> {
+                    String content = result.getResponse().getContentAsString();
+                    JSONArray games = JsonPath.parse(content).read("$");
+                    assertEquals(1, games.size());
+                });
+    }
+
 }

@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "d518a88c-1f11-4d82-b6e1-143793d4bfc6",
+		"name": "GameControllerTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24717927"
+	},
+	"item": [
+		{
+			"name": "Game State Evaluation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"board\": [\n    [\"X\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"X\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"X\", \"O\"],\n    [\"O\", \"X\", \"O\", \"X\", \"O\", \"O\", \"O\"],\n    [\"X\", \"X\", \"X\", \"O\", \"X\", \"O\", \"O\"]\n  ],\n  \"playerName_X\": \"John Doe\",\n  \"playerName_O\": \"Angelo Lamme\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/game-state-evaluation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"game-state-evaluation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Completed Games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/completed-games",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"completed-games"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

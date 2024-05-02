@@ -22,14 +22,14 @@ public class GameController {
     private ResponseEntity<?> evaluateGameState(@RequestBody GameStateDTO gameStateDTO) {
         GameResult result = gameService.evaluateGameState(gameStateDTO.board());
 
-        switch (result.status()) {
+        switch (result.gameStatus()) {
             case WIN -> {
                 gameService.saveCompletedGame(gameStateDTO, result);
                 return ResponseEntity.ok(
-                        switch (result.winnerState()) {
+                        switch (result.winnerMark()) {
                             case X -> "Player X - %s - wins!".formatted(gameStateDTO.playerName_X());
                             case O -> "Player O - %s - wins!".formatted(gameStateDTO.playerName_O());
-                            default -> throw new IllegalStateException("Unexpected value: " + result.winnerState());
+                            default -> throw new IllegalStateException("Unexpected value: " + result.winnerMark());
                         }
                 );
             }
