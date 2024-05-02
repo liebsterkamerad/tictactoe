@@ -58,9 +58,9 @@ For example the following request...
 ```json
 {
     "path": "/api/game-state-evaluation",
-    "error": "Bad Request",
+    "error": "Server Error",
     "message": "JSON parse error: Cannot construct instance of `com.liebsterkamerad.tictactoe.model.CellState`, problem: Invalid symbol: i",
     "timestamp": "2024-05-02T04:04:56.180849",
-    "status": 400
+    "status": 500
 }
 ```
